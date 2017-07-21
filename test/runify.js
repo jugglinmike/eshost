@@ -36,7 +36,7 @@ hosts.forEach(function (record) {
 	  () => 'UnknownESHostError' : (name) => name;
 
   describe('shortnames', function () {
-    this.timeout(type === 'remote' ? 60000 : 20000);
+    this.timeout((type === 'remote' || type === 'edge') ? 60000 : 20000);
 	let agent;
 
 	before(function() {
@@ -63,7 +63,7 @@ hosts.forEach(function (record) {
   });
 
   describe(`${type} (${options.hostPath || options.remoteType})`, function () {
-    this.timeout(type === 'remote' ? 60000 : 20000);
+    this.timeout((type === 'remote' || type === 'edge') ? 60000 : 20000);
     let agent;
 
     before(function() {
