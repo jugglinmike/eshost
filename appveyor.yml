@@ -4,6 +4,7 @@ clone_depth: 10
 
 install:
   - ps: Install-Product node 6
+  - curl -fsS -o C:\Tools\WebDriver\MicrosoftWebDriver.exe https://download.microsoft.com/download/3/4/2/342316D7-EBE0-4F10-ABA2-AE8E0CDF36DD/MicrosoftWebDriver.exe
   - npm install
 
 build: off
