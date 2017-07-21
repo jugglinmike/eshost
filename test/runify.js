@@ -16,7 +16,7 @@ const hosts = [
   ['chrome', { hostPath: '/usr/bin/chromium-browser' }],
   ['firefox', { hostPath: 'firefox' }],
   ['remote', { remoteType: 'edge', webHost: '10.31.0.120', webdriverServer: 'http://10.30.0.44:4444/wd/hub' }],
-  ['edge', {}]),
+  ['edge', {}],
 ];
 
 const timeout = function(ms) {
