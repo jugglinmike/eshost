@@ -55,6 +55,10 @@ Gets an instance of a runner for a particular host type. See the table above for
 
 * **hostPath**: Path to host to execute. For console hosts, this argument is required. For the specific browser runners, hostPath is optional and if omitted, the location for that browser will be detected automatically.
 * **hostArguments**:  Command line arguments used when invoking your host. Not supported for browser hosts. **hostArguments** is an array of strings as you might pass to Node's spawn API.
+* **webHost**: for web browser hosts only; URL host name from which to serve browser assets; optional; defaults to `"localhost"`
+* **webPort**: for web browser hosts only; URL port number from which to serve browser assets; optional; defaults to `1337`
+* **remoteType**: for `remote` host only; the name of the web browser to use in the remote server
+* **webdriverServer**: for `remote` host only; URL of the WebDriver server to which commands should be issued
 
 ### Agent API
 #### initialize(): Promise<void>

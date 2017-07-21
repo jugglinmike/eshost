@@ -15,6 +15,7 @@ const hosts = [
   ['jsc', { hostPath: 'jsc' }],
   ['chrome', { hostPath: 'chrome' }],
   ['firefox', { hostPath: 'firefox' }],
+  ['remote', { remoteType: 'firefox', webdriverServer: 'http://localhost:4444/wd/hub' }],
 ];
 
 const timeout = function(ms) {
@@ -30,7 +31,7 @@ hosts.forEach(function (record) {
     options.hostPath += '.exe';
   }
 
-  describe(`${type} (${options.hostPath})`, function () {
+  describe(`${type} (${options.hostPath || options.remoteType})`, function () {
     this.timeout(20000);
     let agent;
 
@@ -38,6 +39,10 @@ hosts.forEach(function (record) {
       if (process.env['ESHOST_SKIP_' + type.toUpperCase()]) {
         this.skip();
         return;
+      }
+
+      if (type === 'remote') {
+        this.timeout(60 * 1000);
       }
 
       return runify.createAgent(type, options).then(a => agent = a);
@@ -347,7 +352,7 @@ hosts.forEach(function (record) {
       // The GeckoDriver project cannot currently destroy browsing sessions
       // whose main thread is blocked.
       // https://github.com/mozilla/geckodriver/issues/825
-      if (type === 'firefox') {
+      if (type === 'firefox' || options.remoteType === 'firefox') {
         this.skip();
         return;
       }
