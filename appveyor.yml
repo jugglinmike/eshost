@@ -18,7 +18,7 @@ test_script:
   - set ESHOST_SKIP_CH=1
   - set ESHOST_SKIP_NODE=1
   - set ESHOST_SKIP_REMOTE=1
-  - dir C:\Tools\WebDriver
+  - npm test
 
 cache:
   - node_modules
