@@ -13,9 +13,10 @@ const hosts = [
   ['node', { hostPath: 'node' }],
   ['d8', { hostPath: 'd8' }],
   ['jsc', { hostPath: 'jsc' }],
-  ['chrome', { hostPath: 'chrome' }],
+  ['chrome', { hostPath: '/usr/bin/chromium-browser' }],
   ['firefox', { hostPath: 'firefox' }],
-  ['remote', { remoteType: 'firefox', webdriverServer: 'http://localhost:4444/wd/hub' }],
+  ['remote', { remoteType: 'edge', webHost: '10.31.0.120', webdriverServer: 'http://10.30.0.44:4444/wd/hub' }],
+  ['edge', {}],
 ];
 
 const timeout = function(ms) {
@@ -31,18 +32,44 @@ hosts.forEach(function (record) {
     options.hostPath += '.exe';
   }
 
+  let uncaughtErrorName = (type === 'edge' || options.remoteType === 'edge') ?
+	  () => 'UnknownESHostError' : (name) => name;
+
+  describe('shortnames', function () {
+    this.timeout((type === 'remote' || type === 'edge') ? 60000 : 20000);
+	let agent;
+
+	before(function() {
+      if (process.env['ESHOST_SKIP_' + type.toUpperCase()]) {
+        this.skip();
+        return;
+      }
+	});
+
+	after(function() {
+      return agent.destroy();
+	});
+
+    it('allows custom shortNames', function() {
+      const withShortName = Object.assign({ shortName: '$testing' }, options);
+      return runify.createAgent(type, withShortName)
+		.then((a) => agent = a)
+        .then(() => agent.evalScript('$testing.evalScript("print(1)")'))
+		.then((result) => {
+          assert(result.error === null, 'no error');
+          assert.equal(result.stdout.indexOf('1'), 0);
+        });
+    });
+  });
+
   describe(`${type} (${options.hostPath || options.remoteType})`, function () {
-    this.timeout(20000);
+    this.timeout((type === 'remote' || type === 'edge') ? 60000 : 20000);
     let agent;
 
     before(function() {
       if (process.env['ESHOST_SKIP_' + type.toUpperCase()]) {
         this.skip();
         return;
-      }
-
-      if (type === 'remote') {
-        this.timeout(60 * 1000);
       }
 
       return runify.createAgent(type, options).then(a => agent = a);
@@ -52,24 +79,10 @@ hosts.forEach(function (record) {
       return agent.destroy();
     });
 
-    it('allows custom shortNames', function() {
-      const withShortName = Object.assign({ shortName: '$testing' }, options);
-      return runify.createAgent(type, withShortName).then(agent => {
-        var p = agent.evalScript('$testing.evalScript("print(1)")').then(result => {
-          assert(result.error === null, 'no error');
-          assert.equal(result.stdout.indexOf('1'), 0);
-        });
-
-        p.catch(function() {}).then(() => agent.destroy());
-
-        return p;
-      });
-    });
-
     it('runs SyntaxErrors', function () {
       return agent.evalScript('foo x++').then(function (result) {
         assert(result.error, 'error is present');
-        assert.equal(result.error.name, 'SyntaxError');
+        assert.equal(result.error.name, uncaughtErrorName('SyntaxError'));
         assert.equal(result.stdout, '', 'stdout not present');
       });
     });
@@ -214,11 +227,14 @@ hosts.forEach(function (record) {
     });
 
     it('returns errors from evaling in new script', function () {
+	  var expectedPattern = '^' + uncaughtErrorName('SyntaxError') + '\r?\n';
+      var expectedRe = new RegExp(expectedPattern, 'm');
+
       return agent.evalScript(`
         var completion = $.evalScript("x+++");
         print(completion.value.name);
       `).then(function(result) {
-        assert(result.stdout.match(/^SyntaxError\r?\n/m), 'Unexpected stdout: ' + result.stdout + result.stderr);
+        assert(result.stdout.match(expectedRe), 'Unexpected stdout: ' + result.stdout + result.stderr);
       });
     });
 
@@ -352,7 +368,7 @@ hosts.forEach(function (record) {
       // The GeckoDriver project cannot currently destroy browsing sessions
       // whose main thread is blocked.
       // https://github.com/mozilla/geckodriver/issues/825
-      if (type === 'firefox' || options.remoteType === 'firefox') {
+      if (type === 'firefox' || options.remoteType === 'firefox' || options.remoteType === 'edge') {
         this.skip();
         return;
       }

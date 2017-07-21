@@ -1,0 +1,25 @@
+version: "{build}"
+
+clone_depth: 10
+
+install:
+  - ps: Install-Product node 6
+  - curl -fsS -o C:\Tools\WebDriver\MicrosoftWebDriver.exe https://download.microsoft.com/download/3/4/2/342316D7-EBE0-4F10-ABA2-AE8E0CDF36DD/MicrosoftWebDriver.exe
+  - npm install
+
+build: off
+
+test_script:
+  - node --version && npm --version
+  - set ESHOST_SKIP_D8=1
+  - set ESHOST_SKIP_JSC=1
+  - set ESHOST_SKIP_CHROME=1
+  - set ESHOST_SKIP_FIREFOX=1
+  - set ESHOST_SKIP_JSSHELL=1
+  - set ESHOST_SKIP_CH=1
+  - set ESHOST_SKIP_NODE=1
+  - set ESHOST_SKIP_REMOTE=1
+  - npm test
+
+cache:
+  - node_modules
