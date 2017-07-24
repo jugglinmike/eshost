@@ -73,12 +73,28 @@ hosts.forEach(function (record) {
         this.skip();
         return;
       }
+	  console.log('BEFORE 1');
 
-      return runify.createAgent(type, options).then(a => agent = a);
+      return runify.createAgent(type, options).then(a => agent = a)
+		.then(function() {
+		    console.log('BEFORE 2');
+		  });
     });
 
+	beforeEach(function() {
+	  console.log('BEFOREEACH');
+	});
+
+	afterEach(function() {
+	  console.log('AFTEREACH');
+	});
+
     after(function() {
-      return agent.destroy();
+	  console.log('AFTER 1');
+      return agent.destroy()
+		.then(function() {
+		    console.log('AFTER 2');
+		  });
     });
 
     it('runs SyntaxErrors', function () {
@@ -185,6 +201,7 @@ hosts.forEach(function (record) {
     });
 
     it('can eval in new realms', function () {
+	  console.log('test start!');
       return agent.evalScript(`
         log('test script 1');
         var x = 2;
