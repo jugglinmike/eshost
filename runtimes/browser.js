@@ -7,7 +7,7 @@ var log = window.log = function(msg) {
   try {
   var p = top.document.createElement('p');
   p.innerText = msg;
-  top.document.body.append(p);
+  top.document.body.appendChild(p);
   } catch (err) {}
 };
 
