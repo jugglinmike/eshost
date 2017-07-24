@@ -1,5 +1,13 @@
 (function() {
 'use strict';
+window.log = function(msg) {
+  if (!top) {
+	return;
+  }
+  var p = top.document.createElement('p');
+  p.innerText = msg;
+  top.document.body.append(p);
+};
 
 // The global $ binding will be removed if the `shortName` option is in use.
 // Maintain a function-scoped binding for internal use.
@@ -12,6 +20,7 @@ var $ = window.$ = {
   // character).
   shortName: '$ '[0],
   createRealm: function (options) {
+	log('createRealm 1');
     options = options || {};
     const globals = options.globals || {};
 
@@ -20,6 +29,7 @@ var $ = window.$ = {
     var fwin = frame.contentWindow;
     var fdoc = fwin.document;
 
+	log('createRealm 2');
     // The following is a workaround for a bug in Chromium related to reporting
     // errors produced from evaluating code using `eval`.
     // https://bugs.chromium.org/p/chromium/issues/detail?id=746564
@@ -27,6 +37,7 @@ var $ = window.$ = {
 
     var fscript = fdoc.createElement('script');
 
+	log('createRealm 3');
     fscript.textContent = this.source;
     fdoc.body.appendChild(fscript);
     var f$ = fwin.$;
@@ -35,12 +46,15 @@ var $ = window.$ = {
     f$.source = this.source;
     f$.socket = this.socket;
 
+	log('createRealm 4');
     for(var glob in globals) {
       fwin[glob] = globals[glob];
     }
 
     f$.destroy = function () {
+	  log('createRealm - destroy 1');
       document.body.removeChild(frame);
+	  log('createRealm - destroy 2');
 
       if (options.destroy) {
         options.destroy();
@@ -50,11 +64,13 @@ var $ = window.$ = {
     return f$;
   },
   evalScript: function (code, options) {
+	log('evalScript 1');
     options = options || {};
 
     var s = document.createElement('script');
     s.textContent = code;
     var error = null;
+	log('evalScript 2');
     window.onerror = function (msg, file, row, col, err) {
       if (!err) {
         // make up some error for Edge.
@@ -66,14 +82,18 @@ var $ = window.$ = {
 
       error = err;
     }
+	log('evalScript 3');
     document.body.appendChild(s);
+	log('evalScript 4');
     if (window) {
       window.onerror = null;
     }
 
     if (error) {
+	  log('evalScript 5a');
       return { type: 'throw', value: error };
     } else {
+	  log('evalScript 5b');
       return { type: 'normal', value: undefined };
     }
   },
