@@ -98,18 +98,11 @@ hosts.forEach(function (record) {
     });
 
 	it('this is fine', function() {
-	  console.log('body');
       return agent.evalScript('0;');
 	});
 
 	it('this may break things', function() {
-	  console.log('body');
-      return agent.evalScript('print(23);');
-	});
-
-	it('this may not work', function() {
-	  console.log('body');
-      return agent.evalScript('0;');
+      return agent.evalScript('1;');
 	});
     //it('runs SyntaxErrors', function () {
     //  return agent.evalScript('foo x++').then(function (result) {

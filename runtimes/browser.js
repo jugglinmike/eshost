@@ -1,9 +1,13 @@
 (function() {
 'use strict';
+var realmId = new Date().getTime();
+// Need to cache this reference because it looks like events are firing within
+// iframes after they have been detached from the DOM.
+var TOP = top;
 var log = window.log = function(msg) {
-  var p = document.createElement('p');
+  var p = TOP.document.createElement('p');
   p.innerText = msg;
-  document.body.appendChild(p);
+  TOP.document.body.appendChild(p);
 };
 
 // The global $ binding will be removed if the `shortName` option is in use.
@@ -50,7 +54,7 @@ var $ = window.$ = {
 
     f$.destroy = function () {
 	  log('createRealm - destroy 1');
-      //document.body.removeChild(frame);
+      document.body.removeChild(frame);
 	  log('createRealm - destroy 2');
 
       if (options.destroy) {
@@ -61,7 +65,7 @@ var $ = window.$ = {
     return f$;
   },
   evalScript: function (code, options) {
-	log('evalScript 1');
+	log('evalScript ' + realmId + ' ' + code);
     options = options || {};
 
     var s = document.createElement('script');
