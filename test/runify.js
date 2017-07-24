@@ -184,7 +184,7 @@ hosts.forEach(function (record) {
       });
     });
 
-    it.only('can eval in new realms', function () {
+    it('can eval in new realms', function () {
       return agent.evalScript(`
         var x = 2;
         $child = $.createRealm();
