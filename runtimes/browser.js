@@ -112,7 +112,9 @@ var $ = window.$ = {
 };
 
 function print(str) {
+  log('printing: ' + str);
   $.socket.emit('print', str);
+  log('printed!');
 }
 
 window.print = print;
