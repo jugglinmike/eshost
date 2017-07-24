@@ -100,7 +100,7 @@ install: |
       SC_PID="$!"
 
       echo "Waiting for Sauce Connect readyfile"
-      while [ ! -f sauce-connect-ready && ps -f $SC_PID >&/dev/null ]; do
+      while [ ! -f sauce-connect-ready ] && ps -f $SC_PID >&/dev/null; do
         sleep .5
       done
 
