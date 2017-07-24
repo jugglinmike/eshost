@@ -95,6 +95,12 @@ var $ = window.$ = {
 	  throw err;
 	}
 	log('evalScript 4');
+	try {
+	  window;
+	} catch (err) {
+	  log('evalScript 4.01');
+	}
+	  log('evalScript 4.02');
     if (window) {
 	  log('evalScript 4.1');
 	  try {
