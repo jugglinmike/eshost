@@ -96,7 +96,13 @@ var $ = window.$ = {
 	}
 	log('evalScript 4');
     if (window) {
+	  log('evalScript 4.1');
+	  try {
       window.onerror = null;
+	    log('evalScript 4.2');
+	  } catch(err) {
+	    log('evalScript 4.3');
+	  }
     }
 
     if (error) {
