@@ -1,5 +1,10 @@
 (function() {
 'use strict';
+function log(msg) {
+  var p = top.document.createElement('p');
+  p.innerText = msg;
+  top.document.body.appendChild(p);
+}
 
 // The global $ binding will be removed if the `shortName` option is in use.
 // Maintain a function-scoped binding for internal use.
@@ -51,11 +56,15 @@ var $ = window.$ = {
   },
   evalScript: function (code, options) {
     options = options || {};
+	log('evalScript 1');
 
     var s = document.createElement('script');
+	log('evalScript 2');
     s.textContent = code;
+	log('evalScript 3');
     var error = null;
     window.onerror = function (msg, file, row, col, err) {
+	log('evalScript 5');
       if (!err) {
         // make up some error for Edge.
         err = {
@@ -67,13 +76,16 @@ var $ = window.$ = {
       error = err;
     }
     document.body.appendChild(s);
+	log('evalScript 4');
     if (window) {
       window.onerror = null;
     }
 
     if (error) {
+	log('evalScript 6');
       return { type: 'throw', value: error };
     } else {
+	log('evalScript 7');
       return { type: 'normal', value: undefined };
     }
   },
