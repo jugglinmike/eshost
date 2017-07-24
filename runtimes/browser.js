@@ -50,7 +50,7 @@ var $ = window.$ = {
 
     f$.destroy = function () {
 	  log('createRealm - destroy 1');
-      document.body.removeChild(frame);
+      //document.body.removeChild(frame);
 	  log('createRealm - destroy 2');
 
       if (options.destroy) {
