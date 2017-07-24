@@ -55,7 +55,7 @@ var $ = window.$ = {
     var s = document.createElement('script');
     s.textContent = code;
     var error = null;
-    $.global.onerror = function (msg, file, row, col, err) {
+    window.onerror = function (msg, file, row, col, err) {
       if (!err) {
         // make up some error for Edge.
         err = {
@@ -67,7 +67,15 @@ var $ = window.$ = {
       error = err;
     }
     document.body.appendChild(s);
-    $.global.onerror = null;
+
+    /**
+     * Microsoft Edge throws a TypeError (message: "Object expected") when
+     * referencing the `window` identifier in an iframe that is not attached to
+     * some parent document.
+     */
+	try {
+      window.onerror = null;
+    } catch (err) {}
 
     if (error) {
       return { type: 'throw', value: error };
