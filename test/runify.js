@@ -7,16 +7,18 @@ const isWindows = process.platform === 'win32' ||
   process.env.OSTYPE === 'cygwin' ||
   process.env.OSTYPE === 'msys';
 
+const sauceUrl = `https://${process.env.SAUCE_USERNAME}:${process.env.SAUCE_ACCESS_KEY}@ondemand.saucelabs.com/wd/hub`;
+
 const hosts = [
-  ['jsshell', { hostPath: 'js' }],
-  ['ch', { hostPath: 'ch' }],
-  ['node', { hostPath: 'node' }],
-  ['d8', { hostPath: 'd8' }],
-  ['jsc', { hostPath: 'jsc' }],
-  ['chrome', { hostPath: '/usr/bin/chromium-browser' }],
-  ['firefox', { hostPath: 'firefox' }],
-  ['remote', { remoteType: 'edge', webHost: '10.31.0.120', webdriverServer: 'http://10.30.0.44:4444/wd/hub' }],
-  ['edge', {}],
+  //['jsshell', { hostPath: 'js' }],
+  //['ch', { hostPath: 'ch' }],
+  //['node', { hostPath: 'node' }],
+  //['d8', { hostPath: 'd8' }],
+  //['jsc', { hostPath: 'jsc' }],
+  //['chrome', { hostPath: '/usr/bin/chromium-browser' }],
+  //['firefox', { hostPath: 'firefox' }],
+  //['remote', { remoteType: 'edge', webHost: 'localhost', webdriverServer: 'http://localhost:4444/wd/hub' }],
+  ['remote', { remoteType: 'edge', webHost: 'localhost', webdriverServer: sauceUrl }],
 ];
 
 const timeout = function(ms) {
