@@ -88,7 +88,7 @@ var $ = window.$ = {
     }
 	log('evalScript 3');
 	try {
-	  log('evalScript 3.1');
+	  log('evalScript 3.1' + s);
     document.body.appendChild(s);
 	  log('evalScript 3.2');
 	} catch (err) {
