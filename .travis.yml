@@ -95,7 +95,7 @@ install: |
 
       sc-4.4.8-linux/bin/sc \
         --logfile sauce-connect.log \
-        --scproxy-port 1337 \
+        --tunnel-domains localhost \
         --readyfile sauce-connect-ready &
       SC_PID="$!"
 
