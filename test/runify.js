@@ -204,13 +204,6 @@ hosts.forEach(function (record) {
 	  console.log('test start!');
       return agent.evalScript(`
         log('test script 1');
-        var x = 2;
-        $child = $.createRealm();
-        log('test script 2');
-        $child.evalScript("var x = 1; print(x);");
-        log('test script 3');
-        print(x);
-        log('test script 4');
       `).then(function(result) {
         assert(result.stdout.match(/^1\r?\n2\r?\n/m), 'Unexpected stdout: ' + result.stdout + result.stderr);
       });
