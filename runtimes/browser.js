@@ -81,6 +81,7 @@ var $ = window.$ = {
           message: msg
         };
       }
+	  log('onerror: ' + err.message);
 
       error = err;
     }
