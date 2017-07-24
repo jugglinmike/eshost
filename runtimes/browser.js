@@ -98,7 +98,7 @@ var $ = window.$ = {
 	try {
 	  window;
 	} catch (err) {
-	  log('evalScript 4.01');
+	  log('evalScript 4.01' + err.name + ':' + err.message);
 	}
 	  log('evalScript 4.02');
     if (window) {
