@@ -74,6 +74,7 @@ var $ = window.$ = {
     var error = null;
 	log('evalScript 2');
     window.onerror = function (msg, file, row, col, err) {
+	  log('onerror 1');
       if (!err) {
         // make up some error for Edge.
         err = {
@@ -81,15 +82,17 @@ var $ = window.$ = {
           message: msg
         };
       }
-	  log('onerror: ' + err.message);
+	  log('onerror 2: ' + err.message);
 
       error = err;
     }
 	log('evalScript 3');
 	try {
+	  log('evalScript 3.1');
     document.body.appendChild(s);
+	  log('evalScript 3.2');
 	} catch (err) {
-      log('something is not right: ' + err.name + ' - ' + err.message);
+	  log('evalScript 3.3');
 	  throw err;
 	}
 	log('evalScript 4');
