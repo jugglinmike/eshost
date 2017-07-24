@@ -1,12 +1,14 @@
 (function() {
 'use strict';
-window.log = function(msg) {
-  if (!top) {
+var log = window.log = function(msg) {
+  if (!window.top) {
 	return;
   }
+  try {
   var p = top.document.createElement('p');
   p.innerText = msg;
   top.document.body.append(p);
+  } catch (err) {}
 };
 
 // The global $ binding will be removed if the `shortName` option is in use.
