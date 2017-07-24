@@ -95,7 +95,7 @@ install: |
 
       sc-4.4.8-linux/bin/sc \
         --logfile sauce-connect.log \
-        --tunnel-domains localhost \
+        --tunnel-domains eshost.test \
         --readyfile sauce-connect-ready &
       SC_PID="$!"
 
@@ -124,6 +124,8 @@ after_script: |
     cat sauce-connect.log
   fi
 addons:
+  hosts:
+    - eshost.test
   # The "jwt" configuration was inserted by the `travis` executable in
   # response to the following command:
   #

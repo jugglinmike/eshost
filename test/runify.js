@@ -18,7 +18,7 @@ const hosts = [
   //['chrome', { hostPath: '/usr/bin/chromium-browser' }],
   //['firefox', { hostPath: 'firefox' }],
   //['remote', { remoteType: 'edge', webHost: 'localhost', webdriverServer: 'http://localhost:4444/wd/hub' }],
-  ['remote', { remoteType: 'edge', webHost: 'localhost', webdriverServer: sauceUrl }],
+  ['remote', { remoteType: 'edge', webHost: 'eshost.test', webdriverServer: sauceUrl }],
 ];
 
 const timeout = function(ms) {
