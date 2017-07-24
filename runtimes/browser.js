@@ -86,7 +86,12 @@ var $ = window.$ = {
       error = err;
     }
 	log('evalScript 3');
+	try {
     document.body.appendChild(s);
+	} catch (err) {
+      log('something is not right: ' + err.name + ' - ' + err.message);
+	  throw err;
+	}
 	log('evalScript 4');
     if (window) {
       window.onerror = null;
