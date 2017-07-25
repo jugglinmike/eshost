@@ -15,10 +15,10 @@ const hosts = [
   //['node', { hostPath: 'node' }],
   //['d8', { hostPath: 'd8' }],
   //['jsc', { hostPath: 'jsc' }],
-  //['chrome', { hostPath: '/usr/bin/chromium-browser' }],
-  //['firefox', { hostPath: 'firefox' }],
+  ['chrome', { hostPath: '/usr/bin/chromium-browser', webHost: 'eshost.test' }],
+  ['firefox', { hostPath: '/opt/mozilla/firefox-nightly/firefox', webHost: 'eshost.test' }],
   //['remote', { remoteType: 'edge', webHost: 'localhost', webdriverServer: 'http://localhost:4444/wd/hub' }],
-  ['remote', { remoteType: 'edge', webHost: 'eshost.test', webdriverServer: sauceUrl }],
+  //['remote', { remoteType: 'edge', webHost: 'eshost.test', webdriverServer: sauceUrl }],
 ];
 
 const timeout = function(ms) {
