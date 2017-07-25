@@ -9,7 +9,7 @@ const isWindows = process.platform === 'win32' ||
 const remoteCapabilities = {
   browserName: process.env.ESHOST_REMOTE_BROWSERNAME || 'firefox',
   platform: process.env.ESHOST_REMOTE_PLATFORM || 'ANY',
-  versoin: process.env.ESHOST_REMOTE_VERSION || ''
+  version: process.env.ESHOST_REMOTE_VERSION || ''
 };
 
 const hosts = [
