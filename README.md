@@ -57,7 +57,10 @@ Gets an instance of a runner for a particular host type. See the table above for
 * **hostArguments**:  Command line arguments used when invoking your host. Not supported for browser hosts. **hostArguments** is an array of strings as you might pass to Node's spawn API.
 * **webHost**: for web browser hosts only; URL host name from which to serve browser assets; optional; defaults to `"localhost"`
 * **webPort**: for web browser hosts only; URL port number from which to serve browser assets; optional; defaults to `1337`
-* **remoteType**: for `remote` host only; the name of the web browser to use in the remote server
+* **capabilities**: for `remote` host only; the Selenium/WebDriver capabilities to request for the remote session; all specified attributes will be forwarded to the server; [a listing of available attributes is available in the Selenium project's wiki](https://github.com/SeleniumHQ/selenium/wiki/DesiredCapabilities); the following attributes are required:
+  * **capabilities.browserName**
+  * **capabilities.platform**
+  * **capabilities.version**
 * **webdriverServer**: for `remote` host only; URL of the WebDriver server to which commands should be issued
 
 ### Agent API
@@ -163,3 +166,11 @@ following command executes the project's tests but skips JavaScriptCore and D8
 tests:
 
     ESHOST_SKIP_JSC=1 ESHOST_SKIP_D8=1 npm test
+
+Tests for the "remote" agent can be configured to run against any arbitrary
+Selenium/WebDriver configuration through the specification of the following
+environment variables: `ESHOST_REMOTE_BROWSERNAME`, `ESHOST_REMOTE_VERSION`,
+`ESHOST_REMOTE_PLATFORM`. These values are used to define the host's
+capabilities. For example:
+
+    ESHOST_REMOTE_BROWSERNAME=firefox npm test
