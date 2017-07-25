@@ -171,6 +171,8 @@ Tests for the "remote" agent can be configured to run against any arbitrary
 Selenium/WebDriver configuration through the specification of the following
 environment variables: `ESHOST_REMOTE_BROWSERNAME`, `ESHOST_REMOTE_VERSION`,
 `ESHOST_REMOTE_PLATFORM`. These values are used to define the host's
-capabilities. For example:
+capabilities; see the above documentation of `eshost.createAgent` for more
+details. For example, in a Unix-like system, the following command executes the
+project's tests in a remote instance of the Firefox web browser:
 
     ESHOST_REMOTE_BROWSERNAME=firefox npm test
