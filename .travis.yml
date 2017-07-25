@@ -12,9 +12,9 @@ env:
   - ESHOST_TARGET=jsshell
   - ESHOST_TARGET=chrome
   - ESHOST_TARGET=remote:firefox
-  - ESHOST_TARGET=remote:edge \
-      SAUCE_USERNAME=jugglinmike \
-      ESHOST_REMOTE_WEBDRIVER_SERVER=https://$SAUCE_USERNAME:$SAUCE_ACCESS_KEY@ondemand.saucelabs.com/wd/hub
+  - ESHOST_TARGET=remote:edge
+    SAUCE_USERNAME=jugglinmike
+    ESHOST_REMOTE_WEBDRIVER_SERVER=https://$SAUCE_USERNAME:$SAUCE_ACCESS_KEY@ondemand.saucelabs.com/wd/hub
 install: |
     export ESHOST_SKIP_D8=1
     export ESHOST_SKIP_JSC=1
