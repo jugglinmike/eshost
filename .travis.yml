@@ -12,9 +12,14 @@ env:
   - ESHOST_TARGET=jsshell
   - ESHOST_TARGET=chrome
   - ESHOST_TARGET=remote:firefox
+  # ESHOST_REMOTE_WEBDRIVER_SERVER depends on the SAUCE_ACCESS_KEY environment
+  # variable. That variable is not available until *after* the TravisCI JWT
+  # "plugin" runs., so the WebDriver server URL must be defined within the
+  # "install" script.
   - ESHOST_TARGET=remote:edge
     SAUCE_USERNAME=jugglinmike
-    ESHOST_REMOTE_WEBDRIVER_SERVER=https://$SAUCE_USERNAME:$SAUCE_ACCESS_KEY@ondemand.saucelabs.com/wd/hub
+    ESHOST_WEB_HOST=eshost.test
+    ESHOST_REMOTE_WEBDRIVER_SERVER=
 install: |
     export ESHOST_SKIP_D8=1
     export ESHOST_SKIP_JSC=1
@@ -114,6 +119,7 @@ install: |
         exit 1;
       fi
 
+      export ESHOST_REMOTE_WEBDRIVER_SERVER=https://$SAUCE_USERNAME:$SAUCE_ACCESS_KEY@ondemand.saucelabs.com/wd/hub
       export ESHOST_REMOTE_BROWSERNAME=MicrosoftEdge
       export ESHOST_REMOTE_PLATFORM='Windows 10'
       export ESHOST_REMOTE_VERSION=15.15063

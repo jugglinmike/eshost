@@ -7,7 +7,7 @@ const isWindows = process.platform === 'win32' ||
   process.env.OSTYPE === 'cygwin' ||
   process.env.OSTYPE === 'msys';
 const remoteOptions = {
-  webHost: process.env.ESHOST_REMOTE_WEB_HOST || 'localhost',
+  webHost: process.env.ESHOST_WEB_HOST || 'localhost',
   webdriverServer: process.env.ESHOST_REMOTE_WEBDRIVER_SERVER || 'http://localhost:4444/wd/hub',
   capabilities: {
     browserName: process.env.ESHOST_REMOTE_BROWSERNAME || 'firefox',
