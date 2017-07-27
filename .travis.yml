@@ -14,7 +14,6 @@ env:
     #- ESHOST_TARGET=remote:firefox
   - ESHOST_TARGET=remote:edge
     SAUCE_USERNAME=jugglinmike
-    ESHOST_REMOTE_WEBDRIVER_SERVER=https://$SAUCE_USERNAME:$SAUCE_ACCESS_KEY@ondemand.saucelabs.com/wd/hub
 install: |
     export ESHOST_SKIP_D8=1
     export ESHOST_SKIP_JSC=1
@@ -26,6 +25,8 @@ install: |
     export ESHOST_SKIP_REMOTE=1
     export ESHOST_SKIP_EDGE=1
 
+    export ESHOST_REMOTE_WEBDRIVER_SERVER=https://$SAUCE_USERNAME:$SAUCE_ACCESS_KEY@ondemand.saucelabs.com/wd/hub
+
     function install_firefox {
       export TMP=$(mktemp);
       wget https://archive.mozilla.org/pub/firefox/nightly/2017/07/2017-07-07-10-01-38-mozilla-central/firefox-56.0a1.en-US.linux-x86_64.tar.bz2 -O $TMP;
@@ -35,12 +36,6 @@ install: |
       rm $TMP;
       unset TMP;
     }
-
-    if [ -z "${SAUCE_ACCESS_KEY}" ]; then
-      echo Not set...
-    else
-      echo K: \"$SAUCE_ACCESS_KEY\"
-    fi
 
     if [[ "$ESHOST_TARGET" == "node" ]]; then
       unset ESHOST_SKIP_NODE;
