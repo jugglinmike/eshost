@@ -6,12 +6,12 @@ before_install:
     - export DISPLAY=:99.0
     - sh -e /etc/init.d/xvfb start
 env:
-  - ESHOST_TARGET=node
-  - ESHOST_TARGET=firefox
-  - ESHOST_TARGET=chakra
-  - ESHOST_TARGET=jsshell
-  - ESHOST_TARGET=chrome
-  - ESHOST_TARGET=remote:firefox
+    #- ESHOST_TARGET=node
+    #- ESHOST_TARGET=firefox
+    #- ESHOST_TARGET=chakra
+    #- ESHOST_TARGET=jsshell
+    #- ESHOST_TARGET=chrome
+    #- ESHOST_TARGET=remote:firefox
   - ESHOST_TARGET=remote:edge
     SAUCE_USERNAME=jugglinmike
     ESHOST_REMOTE_WEBDRIVER_SERVER=https://$SAUCE_USERNAME:$SAUCE_ACCESS_KEY@ondemand.saucelabs.com/wd/hub
@@ -35,6 +35,12 @@ install: |
       rm $TMP;
       unset TMP;
     }
+
+    if [ -z "${SAUCE_ACCESS_KEY}" ]; then
+      echo Not set...
+    else
+      echo K: \"$SAUCE_ACCESS_KEY\"
+    fi
 
     if [[ "$ESHOST_TARGET" == "node" ]]; then
       unset ESHOST_SKIP_NODE;
