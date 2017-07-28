@@ -58,17 +58,9 @@ hosts.forEach(function (record) {
 
     describe('child process creation', function() {
       let agent;
+      let script;
 
       before(function() {
-        return runify.createAgent(type, options)
-          .then(a => agent = a);
-      });
-
-      after(function() {
-        return agent.destroy();
-      });
-
-      it('forwards hostArgs (via agent.args) correctly', function () {
         let args = [];
 
         // The arguments in agent.args are those provided
@@ -77,23 +69,23 @@ hosts.forEach(function (record) {
 
         // Setup special cases
         if (type === 'd8') {
-          agent.args.push('--expose_gc');
-          args.push('-e', 'print(typeof gc === "function");');
+          args.push('--expose_gc');
+          script = 'print(typeof gc === "function");';
         }
 
         if (type === 'node') {
-          agent.args.push('--expose_gc');
-          args.push('-e', 'console.log(typeof gc === "function");');
+          args.push('--expose_gc');
+          script = 'print(typeof gc === "function");';
         }
 
         if (type === 'jsc') {
-          agent.args.push('--useWebAssembly=true');
-          args.push('-e', 'print(typeof WebAssembly === "function");');
+          args.push('--useWebAssembly=true');
+          script = 'print(typeof WebAssembly === "function");';
         }
 
         if (type === 'jsshell') {
-          agent.args.push('--no-wasm');
-          args.push('-e', 'print(typeof WebAssembly === "undefined");');
+          args.push('--no-wasm');
+          script = 'print(typeof WebAssembly === "undefined");';
         }
 
         // chakra cannot be tested in this manner (no -e support),
@@ -106,19 +98,20 @@ hosts.forEach(function (record) {
           return;
         }
 
-        return new Promise(resolve => {
-          let acp = agent.createChildProcess(args);
-          let stdout = '';
-          let stderr = '';
+		let withHostArgs = Object.assign({ hostArguments: args }, options);
+        return runify.createAgent(type, withHostArgs)
+          .then(a => agent = a);
+      });
 
-          acp.stdout.on('data', str => { stdout += str; });
-          acp.stderr.on('data', str => { stderr += str; });
-          acp.on('close', () => {
-            acp = null;
-            assert.equal(stdout.trim(), 'true');
-            resolve();
-          });
-        });
+      after(function() {
+        return agent.destroy();
+      });
+
+      it('forwards hostArgs (via agent.args) correctly', function () {
+        return agent.evalScript(script)
+		  .then(function(result) {
+              assert.equal(result.stdout.trim(), 'true');
+            });
       });
     });
 
